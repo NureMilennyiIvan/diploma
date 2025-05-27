@@ -100,6 +100,8 @@ pub(crate) fn handler(ctx: Context<WithdrawFromCpAmm>, lp_tokens: u64) -> Result
 
     ctx.accounts.cp_amm.withdraw(withdraw_payload);
     let cp_amm = &ctx.accounts.cp_amm;
+
+    msg!("Event: WithdrawFromCpAmm");
     emit!(
         WithdrawFromCpAmmEvent{
             withdrawer: ctx.accounts.signer.key(),

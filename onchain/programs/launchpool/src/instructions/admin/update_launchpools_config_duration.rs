@@ -24,6 +24,7 @@ pub struct UpdateLaunchpoolsConfigDuration<'info> {
 
 pub(crate) fn handler(ctx: Context<UpdateLaunchpoolsConfigDuration>, new_duration: u64) -> Result<()> {
     ctx.accounts.launchpools_config.update_duration(new_duration)?;
+    msg!("Event: UpdateLaunchpoolsConfigDuration");
     emit!(
         UpdateLaunchpoolsConfigDurationEvent{
             authority: ctx.accounts.authority.key(),

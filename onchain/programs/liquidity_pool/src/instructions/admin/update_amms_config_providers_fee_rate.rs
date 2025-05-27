@@ -24,6 +24,8 @@ pub struct UpdateAmmsConfigProvidersFeeRate<'info> {
 
 pub(crate) fn handler(ctx: Context<UpdateAmmsConfigProvidersFeeRate>, new_providers_fee_rate_basis_points: u16) -> Result<()> {
     ctx.accounts.amms_config.update_providers_fee_rate(new_providers_fee_rate_basis_points)?;
+
+    msg!("Event: UpdateAmmsConfigProvidersFeeRate");
     emit!(
         UpdateAmmsConfigProvidersFeeRateEvent {
             authority: ctx.accounts.authority.key(),

@@ -96,6 +96,8 @@ pub(crate) fn handler(ctx: Context<ProvideToCpAmm>, base_liquidity: u64, quote_l
 
     ctx.accounts.cp_amm.provide(provide_payload);
     let cp_amm = &ctx.accounts.cp_amm;
+
+    msg!("Event: ProvideToCpAmm");
     emit!(
         ProvideToCpAmmEvent{
             provider: ctx.accounts.signer.key(),

@@ -67,7 +67,7 @@ pub(crate) fn handler(ctx: Context<CollectProtocolReward>) -> Result<()> {
     let launchpool_seeds = ctx.accounts.launchpool.seeds();
     let receive_reward_instruction_seeds: &[&[&[u8]]] = &[&launchpool_seeds];
     get_receive_reward_instruction.execute(Some(receive_reward_instruction_seeds))?;
-
+    msg!("Event: CollectProtocolReward");
     emit!(
         CollectProtocolRewardEvent {
             launchpool: ctx.accounts.launchpool.key(),

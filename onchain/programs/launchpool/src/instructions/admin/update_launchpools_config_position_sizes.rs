@@ -26,6 +26,7 @@ pub(crate) fn handler(ctx: Context<UpdateLaunchpoolsConfigPositionSizes>, new_mi
     ctx.accounts.launchpools_config.update_min_position_size(new_min_position_size)?;
     ctx.accounts.launchpools_config.update_max_position_size(new_max_position_size)?;
     let launchpools_config = &ctx.accounts.launchpools_config;
+    msg!("Event: UpdateLaunchpoolsConfigPositionSizes");
     emit!(
         UpdateLaunchpoolsConfigPositionSizesEvent{
             authority: ctx.accounts.authority.key(),

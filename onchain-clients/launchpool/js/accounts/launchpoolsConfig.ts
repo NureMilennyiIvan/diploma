@@ -177,3 +177,7 @@ export async function fetchAllMaybeLaunchpoolsConfig(
     decodeLaunchpoolsConfig(maybeAccount)
   );
 }
+
+export function getLaunchpoolsConfigSize(): number {
+  return 107;
+}

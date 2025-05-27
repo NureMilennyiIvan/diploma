@@ -11,5 +11,11 @@
 /onchain/owner.json
 /onchain/.idea
 
-/backend/indexer/traget
-/backend/webserver/traget
+/onchain-clients/liquidity-pool/rust/target
+/onchain-clients/launchpool/rust/target
+
+/backend/indexer/target
+/backend/indexer/.env
+
+/backend/webserver/target
+

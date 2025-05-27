@@ -39,6 +39,8 @@ pub(crate) fn handler(ctx: Context<InitializeAmmsConfig>, protocol_fee_rate_basi
     )?;
     ctx.accounts.amms_configs_manager.increment_configs_count();
     let amms_config = &ctx.accounts.amms_config;
+
+    msg!("Event: InitializeAmmsConfig");
     emit!(
         InitializeAmmsConfigEvent{
             authority: ctx.accounts.authority.key(),

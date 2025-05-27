@@ -27,6 +27,8 @@ pub(crate) fn handler(ctx: Context<UpdateAmmsConfigFeeAuthority>) -> Result<()> 
     ctx.accounts.amms_config.update_fee_authority(
         ctx.accounts.new_fee_authority.key()
     );
+
+    msg!("Event: UpdateAmmsConfigFeeAuthority");
     emit!(
         UpdateAmmsConfigFeeAuthorityEvent{
             authority: ctx.accounts.authority.key(),

@@ -37,6 +37,8 @@ pub(crate) fn handler(ctx: Context<InitializeLaunchpoolsConfigsManager>) -> Resu
         ctx.bumps.launchpools_configs_manager
     );
     let launchpools_configs_manager = &ctx.accounts.launchpools_configs_manager;
+
+    msg!("Event: InitializeLaunchpoolsConfigsManager");
     emit!(
         InitializeLaunchpoolsConfigsManagerEvent{
             signer: ctx.accounts.signer.key(),

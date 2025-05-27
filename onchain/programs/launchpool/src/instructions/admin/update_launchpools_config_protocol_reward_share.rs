@@ -24,6 +24,7 @@ pub struct UpdateLaunchpoolsConfigProtocolRewardShare<'info> {
 
 pub(crate) fn handler(ctx: Context<UpdateLaunchpoolsConfigProtocolRewardShare>, new_protocol_reward_share_basis_points: u16) -> Result<()> {
     ctx.accounts.launchpools_config.update_protocol_reward_share_basis_points(new_protocol_reward_share_basis_points)?;
+    msg!("Event: UpdateLaunchpoolsConfigProtocolRewardShare");
     emit!(
         UpdateLaunchpoolsConfigProtocolRewardShareEvent{
             authority: ctx.accounts.authority.key(),

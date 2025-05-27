@@ -17,16 +17,12 @@ import {
   fixEncoderSize,
   getAddressDecoder,
   getAddressEncoder,
-  getArrayDecoder,
-  getArrayEncoder,
   getBytesDecoder,
   getBytesEncoder,
   getStructDecoder,
   getStructEncoder,
   getU64Decoder,
   getU64Encoder,
-  getU8Decoder,
-  getU8Encoder,
   transformEncoder,
   type Account,
   type Address,
@@ -79,8 +75,8 @@ export type Launchpool = {
   minPositionSize: bigint;
   maxPositionSize: bigint;
   status: LaunchpoolStatus;
-  bump: Array<number>;
-  rewardVaultBump: Array<number>;
+  bump: ReadonlyUint8Array;
+  rewardVaultBump: ReadonlyUint8Array;
 };
 
 export type LaunchpoolArgs = {
@@ -102,8 +98,8 @@ export type LaunchpoolArgs = {
   minPositionSize: number | bigint;
   maxPositionSize: number | bigint;
   status: LaunchpoolStatusArgs;
-  bump: Array<number>;
-  rewardVaultBump: Array<number>;
+  bump: ReadonlyUint8Array;
+  rewardVaultBump: ReadonlyUint8Array;
 };
 
 export function getLaunchpoolEncoder(): Encoder<LaunchpoolArgs> {
@@ -128,8 +124,8 @@ export function getLaunchpoolEncoder(): Encoder<LaunchpoolArgs> {
       ['minPositionSize', getU64Encoder()],
       ['maxPositionSize', getU64Encoder()],
       ['status', getLaunchpoolStatusEncoder()],
-      ['bump', getArrayEncoder(getU8Encoder(), { size: 1 })],
-      ['rewardVaultBump', getArrayEncoder(getU8Encoder(), { size: 1 })],
+      ['bump', fixEncoderSize(getBytesEncoder(), 1)],
+      ['rewardVaultBump', fixEncoderSize(getBytesEncoder(), 1)],
     ]),
     (value) => ({ ...value, discriminator: LAUNCHPOOL_DISCRIMINATOR })
   );
@@ -156,8 +152,8 @@ export function getLaunchpoolDecoder(): Decoder<Launchpool> {
     ['minPositionSize', getU64Decoder()],
     ['maxPositionSize', getU64Decoder()],
     ['status', getLaunchpoolStatusDecoder()],
-    ['bump', getArrayDecoder(getU8Decoder(), { size: 1 })],
-    ['rewardVaultBump', getArrayDecoder(getU8Decoder(), { size: 1 })],
+    ['bump', fixDecoderSize(getBytesDecoder(), 1)],
+    ['rewardVaultBump', fixDecoderSize(getBytesDecoder(), 1)],
   ]);
 }
 
@@ -216,4 +212,8 @@ export async function fetchAllMaybeLaunchpool(
 ): Promise<MaybeAccount<Launchpool>[]> {
   const maybeAccounts = await fetchEncodedAccounts(rpc, addresses, config);
   return maybeAccounts.map((maybeAccount) => decodeLaunchpool(maybeAccount));
+}
+
+export function getLaunchpoolSize(): number {
+  return 283;
 }

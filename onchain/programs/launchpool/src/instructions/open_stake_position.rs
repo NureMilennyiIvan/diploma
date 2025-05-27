@@ -80,8 +80,9 @@ pub(crate) fn handler(ctx: Context<OpenStakePosition>, stake_amount: u64) -> Res
 
     ctx.accounts.launchpool.process_position_open(open_position_payload)?;
 
-
     let launchpool = &ctx.accounts.launchpool;
+
+    msg!("Event: OpenStakePosition");
     emit!(
         OpenStakePositionEvent{
             launchpool: launchpool.key(),

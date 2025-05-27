@@ -70,6 +70,8 @@ pub(crate) fn handler(ctx: Context<IncreaseStakePosition>, stake_increase_amount
 
     let launchpool = &ctx.accounts.launchpool;
     let stake_position = &ctx.accounts.stake_position;
+
+    msg!("Event: IncreaseStakePosition");
     emit!(
         IncreaseStakePositionEvent{
             launchpool: launchpool.key(),

@@ -167,3 +167,7 @@ export async function fetchAllMaybeAmmsConfigsManager(
     decodeAmmsConfigsManager(maybeAccount)
   );
 }
+
+export function getAmmsConfigsManagerSize(): number {
+  return 81;
+}

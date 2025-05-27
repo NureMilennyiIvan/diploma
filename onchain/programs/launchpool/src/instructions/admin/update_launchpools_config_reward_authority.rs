@@ -27,6 +27,7 @@ pub(crate) fn handler(ctx: Context<UpdateLaunchpoolsConfigRewardAuthority>) -> R
     ctx.accounts.launchpools_config.update_reward_authority(
         ctx.accounts.new_reward_authority.key()
     );
+    msg!("Event: UpdateLaunchpoolsConfigRewardAuthority");
     emit!(
         UpdateLaunchpoolsConfigRewardAuthorityEvent{
             authority: ctx.accounts.authority.key(),

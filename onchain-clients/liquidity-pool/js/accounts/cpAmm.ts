@@ -17,8 +17,6 @@ import {
   fixEncoderSize,
   getAddressDecoder,
   getAddressEncoder,
-  getArrayDecoder,
-  getArrayEncoder,
   getBooleanDecoder,
   getBooleanEncoder,
   getBytesDecoder,
@@ -27,8 +25,6 @@ import {
   getStructEncoder,
   getU64Decoder,
   getU64Encoder,
-  getU8Decoder,
-  getU8Encoder,
   transformEncoder,
   type Account,
   type Address,
@@ -64,13 +60,13 @@ export type CpAmm = {
   /** Whether the AMM has been launched and is active. */
   isLaunched: boolean;
   /** Canonical bump seed for the account's PDA. */
-  bump: Array<number>;
+  bump: ReadonlyUint8Array;
   /** Canonical bump seed for the base vault PDA. */
-  baseVaultBump: Array<number>;
+  baseVaultBump: ReadonlyUint8Array;
   /** Canonical bump seed for the quote vault PDA. */
-  quoteVaultBump: Array<number>;
+  quoteVaultBump: ReadonlyUint8Array;
   /** Canonical bump seed for the locked LP vault PDA. */
-  lockedLpVaultBump: Array<number>;
+  lockedLpVaultBump: ReadonlyUint8Array;
   /**
    * Initial liquidity that is permanently locked after the pool launch.
    * This stabilizes the pool in case of empty liquidity.
@@ -117,13 +113,13 @@ export type CpAmmArgs = {
   /** Whether the AMM has been launched and is active. */
   isLaunched: boolean;
   /** Canonical bump seed for the account's PDA. */
-  bump: Array<number>;
+  bump: ReadonlyUint8Array;
   /** Canonical bump seed for the base vault PDA. */
-  baseVaultBump: Array<number>;
+  baseVaultBump: ReadonlyUint8Array;
   /** Canonical bump seed for the quote vault PDA. */
-  quoteVaultBump: Array<number>;
+  quoteVaultBump: ReadonlyUint8Array;
   /** Canonical bump seed for the locked LP vault PDA. */
-  lockedLpVaultBump: Array<number>;
+  lockedLpVaultBump: ReadonlyUint8Array;
   /**
    * Initial liquidity that is permanently locked after the pool launch.
    * This stabilizes the pool in case of empty liquidity.
@@ -170,10 +166,10 @@ export function getCpAmmEncoder(): Encoder<CpAmmArgs> {
       ['discriminator', fixEncoderSize(getBytesEncoder(), 8)],
       ['isInitialized', getBooleanEncoder()],
       ['isLaunched', getBooleanEncoder()],
-      ['bump', getArrayEncoder(getU8Encoder(), { size: 1 })],
-      ['baseVaultBump', getArrayEncoder(getU8Encoder(), { size: 1 })],
-      ['quoteVaultBump', getArrayEncoder(getU8Encoder(), { size: 1 })],
-      ['lockedLpVaultBump', getArrayEncoder(getU8Encoder(), { size: 1 })],
+      ['bump', fixEncoderSize(getBytesEncoder(), 1)],
+      ['baseVaultBump', fixEncoderSize(getBytesEncoder(), 1)],
+      ['quoteVaultBump', fixEncoderSize(getBytesEncoder(), 1)],
+      ['lockedLpVaultBump', fixEncoderSize(getBytesEncoder(), 1)],
       ['initialLockedLiquidity', getU64Encoder()],
       ['constantProductSqrt', getQ64128Encoder()],
       ['baseQuoteRatioSqrt', getQ64128Encoder()],
@@ -200,10 +196,10 @@ export function getCpAmmDecoder(): Decoder<CpAmm> {
     ['discriminator', fixDecoderSize(getBytesDecoder(), 8)],
     ['isInitialized', getBooleanDecoder()],
     ['isLaunched', getBooleanDecoder()],
-    ['bump', getArrayDecoder(getU8Decoder(), { size: 1 })],
-    ['baseVaultBump', getArrayDecoder(getU8Decoder(), { size: 1 })],
-    ['quoteVaultBump', getArrayDecoder(getU8Decoder(), { size: 1 })],
-    ['lockedLpVaultBump', getArrayDecoder(getU8Decoder(), { size: 1 })],
+    ['bump', fixDecoderSize(getBytesDecoder(), 1)],
+    ['baseVaultBump', fixDecoderSize(getBytesDecoder(), 1)],
+    ['quoteVaultBump', fixDecoderSize(getBytesDecoder(), 1)],
+    ['lockedLpVaultBump', fixDecoderSize(getBytesDecoder(), 1)],
     ['initialLockedLiquidity', getU64Decoder()],
     ['constantProductSqrt', getQ64128Decoder()],
     ['baseQuoteRatioSqrt', getQ64128Decoder()],
@@ -278,4 +274,8 @@ export async function fetchAllMaybeCpAmm(
 ): Promise<MaybeAccount<CpAmm>[]> {
   const maybeAccounts = await fetchEncodedAccounts(rpc, addresses, config);
   return maybeAccounts.map((maybeAccount) => decodeCpAmm(maybeAccount));
+}
+
+export function getCpAmmSize(): number {
+  return 366;
 }

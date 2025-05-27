@@ -46,6 +46,9 @@ pub(crate) fn handler(ctx: Context<InitializeLaunchpoolsConfig>, min_position_si
     )?;
     ctx.accounts.launchpools_configs_manager.increment_configs_count();
     let launchpools_config = &ctx.accounts.launchpools_config;
+
+    msg!("Event: InitializeLaunchpoolsConfig");
+
     emit!(
         InitializeLaunchpoolsConfigEvent {
             authority: ctx.accounts.authority.key(),

@@ -92,6 +92,8 @@ pub(crate) fn handler(ctx: Context<SwapInCpAmm>, swap_amount: u64, estimated_res
 
     ctx.accounts.cp_amm.swap(swap_payload);
     let cp_amm = &ctx.accounts.cp_amm;
+
+    msg!("Event: SwapInCpAmm");
     emit!(
         SwapInCpAmmEvent{
             swapper: ctx.accounts.signer.key(),

@@ -108,6 +108,8 @@ pub(crate) fn handler(ctx: Context<LaunchCpAmm>, base_liquidity: u64, quote_liqu
 
     ctx.accounts.cp_amm.launch(*launch_payload);
     let cp_amm = &ctx.accounts.cp_amm;
+
+    msg!("Event: LaunchCpAmm");
     emit!(
         LaunchCpAmmEvent{
             creator: cp_amm.creator().key(),

@@ -49,6 +49,7 @@ pub(crate) fn handler(ctx: Context<LaunchLaunchpool>, start_timestamp: u64) -> R
     let launch_payload = ctx.accounts.launchpool.get_launch_payload(now, start_timestamp, ctx.accounts.launchpools_config.duration())?;
     ctx.accounts.launchpool.launch(launch_payload);
     let launchpool = &ctx.accounts.launchpool;
+    msg!("Event: LaunchLaunchpool");
     emit!(
         LaunchLaunchpoolEvent{
             authority: ctx.accounts.authority.key(),

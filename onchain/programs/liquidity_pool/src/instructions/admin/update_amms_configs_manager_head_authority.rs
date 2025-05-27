@@ -21,8 +21,10 @@ pub(crate) fn handler(ctx: Context<UpdateAmmsConfigsManagerHeadAuthority>) -> Re
     ctx.accounts.amms_configs_manager.update_head_authority(
         ctx.accounts.new_head_authority.key()
     );
+
+    msg!("Event: UpdateAmmsConfigsManagerHeadAuthority");
     emit!(
-        UpdateAmmsConfigsManagerAuthorityEvent{
+        UpdateAmmsConfigsManagerHeadAuthorityEvent{
             head_authority: ctx.accounts.head_authority.key(),
             new_head_authority:  ctx.accounts.amms_configs_manager.authority().key(),
             timestamp: Clock::get()?.unix_timestamp
@@ -32,7 +34,7 @@ pub(crate) fn handler(ctx: Context<UpdateAmmsConfigsManagerHeadAuthority>) -> Re
 }
 
 #[event]
-pub struct UpdateAmmsConfigsManagerAuthorityEvent {
+pub struct UpdateAmmsConfigsManagerHeadAuthorityEvent {
     pub head_authority: Pubkey,
     pub new_head_authority: Pubkey,
     pub timestamp: i64,

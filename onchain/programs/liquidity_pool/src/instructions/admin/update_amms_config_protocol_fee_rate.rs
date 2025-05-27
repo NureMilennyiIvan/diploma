@@ -24,6 +24,8 @@ pub struct UpdateAmmsConfigProtocolFeeRate<'info> {
 
 pub(crate) fn handler(ctx: Context<UpdateAmmsConfigProtocolFeeRate>, new_protocol_fee_rate_basis_points: u16) -> Result<()> {
     ctx.accounts.amms_config.update_protocol_fee_rate(new_protocol_fee_rate_basis_points)?;
+
+    msg!("Event: UpdateAmmsConfigProtocolFeeRate");
     emit!(
         UpdateAmmsConfigProtocolFeeRateEvent {
             authority: ctx.accounts.authority.key(),

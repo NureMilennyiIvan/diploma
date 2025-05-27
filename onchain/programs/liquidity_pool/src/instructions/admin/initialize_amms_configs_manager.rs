@@ -37,6 +37,8 @@ pub(crate) fn handler(ctx: Context<InitializeAmmsConfigsManager>) -> Result<()> 
         ctx.bumps.amms_configs_manager
     );
     let amms_configs_manager = &ctx.accounts.amms_configs_manager;
+
+    msg!("Event: InitializeAmmsConfigsManager");
     emit!(
         InitializeAmmsConfigsManagerEvent{
             signer: ctx.accounts.signer.key(),

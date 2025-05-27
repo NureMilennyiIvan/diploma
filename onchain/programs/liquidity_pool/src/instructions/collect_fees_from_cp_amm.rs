@@ -88,6 +88,8 @@ pub(crate) fn handler(ctx: Context<CollectFeesFromCpAmm>) -> Result<()> {
     }
 
     ctx.accounts.cp_amm.collect_fees(collect_fees_payload);
+
+    msg!("Event: CollectFeesFromCpAmm");
     emit!(
         CollectFeesFromCpAmmEvent{
             signer: ctx.accounts.signer.key(),

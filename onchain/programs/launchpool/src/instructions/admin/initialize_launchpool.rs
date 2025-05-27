@@ -62,6 +62,9 @@ pub(crate) fn handler(ctx: Context<InitializeLaunchpool>, initial_reward_amount:
         ctx.bumps.reward_vault
     )?;
     let launchpool = &ctx.accounts.launchpool;
+
+    msg!("Event: InitializeLaunchpool");
+
     emit!(
         InitializeLaunchpoolEvent{
             authority: ctx.accounts.authority.key(),

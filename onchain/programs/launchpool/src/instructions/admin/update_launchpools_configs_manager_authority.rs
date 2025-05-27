@@ -21,6 +21,7 @@ pub(crate) fn handler(ctx: Context<UpdateLaunchpoolsConfigsManagerAuthority>) ->
     ctx.accounts.launchpools_configs_manager.update_authority(
         ctx.accounts.new_authority.key()
     );
+    msg!("Event: UpdateLaunchpoolsConfigsManagerAuthority");
     emit!(
         UpdateLaunchpoolsConfigsManagerAuthorityEvent{
             authority: ctx.accounts.authority.key(),

@@ -17,14 +17,10 @@ import {
   fixEncoderSize,
   getAddressDecoder,
   getAddressEncoder,
-  getArrayDecoder,
-  getArrayEncoder,
   getBytesDecoder,
   getBytesEncoder,
   getStructDecoder,
   getStructEncoder,
-  getU8Decoder,
-  getU8Encoder,
   transformEncoder,
   type Account,
   type Address,
@@ -68,8 +64,8 @@ export type StakePosition = {
   rewardEarned: Q64128;
   rewardDebt: Q64128;
   status: PositionStatus;
-  bump: Array<number>;
-  stakeVaultBump: Array<number>;
+  bump: ReadonlyUint8Array;
+  stakeVaultBump: ReadonlyUint8Array;
 };
 
 export type StakePositionArgs = {
@@ -80,8 +76,8 @@ export type StakePositionArgs = {
   rewardEarned: Q64128Args;
   rewardDebt: Q64128Args;
   status: PositionStatusArgs;
-  bump: Array<number>;
-  stakeVaultBump: Array<number>;
+  bump: ReadonlyUint8Array;
+  stakeVaultBump: ReadonlyUint8Array;
 };
 
 export function getStakePositionEncoder(): Encoder<StakePositionArgs> {
@@ -95,8 +91,8 @@ export function getStakePositionEncoder(): Encoder<StakePositionArgs> {
       ['rewardEarned', getQ64128Encoder()],
       ['rewardDebt', getQ64128Encoder()],
       ['status', getPositionStatusEncoder()],
-      ['bump', getArrayEncoder(getU8Encoder(), { size: 1 })],
-      ['stakeVaultBump', getArrayEncoder(getU8Encoder(), { size: 1 })],
+      ['bump', fixEncoderSize(getBytesEncoder(), 1)],
+      ['stakeVaultBump', fixEncoderSize(getBytesEncoder(), 1)],
     ]),
     (value) => ({ ...value, discriminator: STAKE_POSITION_DISCRIMINATOR })
   );
@@ -112,8 +108,8 @@ export function getStakePositionDecoder(): Decoder<StakePosition> {
     ['rewardEarned', getQ64128Decoder()],
     ['rewardDebt', getQ64128Decoder()],
     ['status', getPositionStatusDecoder()],
-    ['bump', getArrayDecoder(getU8Decoder(), { size: 1 })],
-    ['stakeVaultBump', getArrayDecoder(getU8Decoder(), { size: 1 })],
+    ['bump', fixDecoderSize(getBytesDecoder(), 1)],
+    ['stakeVaultBump', fixDecoderSize(getBytesDecoder(), 1)],
   ]);
 }
 
@@ -179,4 +175,8 @@ export async function fetchAllMaybeStakePosition(
 ): Promise<MaybeAccount<StakePosition>[]> {
   const maybeAccounts = await fetchEncodedAccounts(rpc, addresses, config);
   return maybeAccounts.map((maybeAccount) => decodeStakePosition(maybeAccount));
+}
+
+export function getStakePositionSize(): number {
+  return 179;
 }

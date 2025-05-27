@@ -104,6 +104,7 @@ pub(crate) fn handler(ctx: Context<CloseStakePosition>) -> Result<()> {
     get_receive_reward_instruction.execute(Some(receive_reward_instruction_seeds))?;
 
     let launchpool = &ctx.accounts.launchpool;
+    msg!("Event: CloseStakePosition");
     emit!(
         CloseStakePositionEvent{
             launchpool: launchpool.key(),

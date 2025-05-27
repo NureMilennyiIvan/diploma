@@ -124,6 +124,8 @@ pub(crate) fn handler(ctx: Context<InitializeCpAmm>) -> Result<()> {
     )?;
 
     let cp_amm = &accounts.cp_amm;
+
+    msg!("Event: InitializeCpAmm");
     emit!(
         InitializeCpAmmEvent{
             creator: cp_amm.creator().key(),
