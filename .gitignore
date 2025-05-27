@@ -1,0 +1,15 @@
+/node_modules
+/.idea
+
+/onchain/.anchor
+/onchain/.DS_Store
+/onchain/target
+/onchain/**/*.rs.bk
+/onchain/node_modules
+/onchain/test-ledger
+/onchain/.yarn
+/onchain/owner.json
+/onchain/.idea
+
+/backend/indexer/traget
+/backend/webserver/traget

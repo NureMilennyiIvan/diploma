@@ -1,0 +1,70 @@
+
+use anchor_lang::prelude::*;
+
+declare_id!("5M9TeHHBeAtUd956yRUW9TEULF5XqGUdcyfy74YDzXHU");
+
+mod error;
+mod instructions;
+mod state;
+
+pub use instructions::*;
+
+#[program]
+pub mod launchpool {
+    use super::*;
+    pub fn initialize_launchpools_config(ctx: Context<InitializeLaunchpoolsConfig>, min_position_size: u64, max_position_size: u64, protocol_reward_share_basis_points: u16, duration: u64) -> Result<()>{
+        initialize_launchpools_config::handler(ctx, min_position_size, max_position_size, protocol_reward_share_basis_points, duration)
+    }
+
+    pub fn initialize_launchpools_configs_manager(ctx: Context<InitializeLaunchpoolsConfigsManager>) -> Result<()>{
+        initialize_launchpools_configs_manager::handler(ctx)
+    }
+
+    pub fn update_launchpools_config_duration(ctx: Context<UpdateLaunchpoolsConfigDuration>, new_duration: u64) -> Result<()>{
+        update_launchpools_config_duration::handler(ctx, new_duration)
+    }
+
+    pub fn update_launchpools_config_position_sizes(ctx: Context<UpdateLaunchpoolsConfigPositionSizes>, new_min_position_size: u64, new_max_position_size: u64) -> Result<()>{
+        update_launchpools_config_position_sizes::handler(ctx, new_min_position_size, new_max_position_size)
+    }
+
+    pub fn update_launchpools_config_protocol_reward_share(ctx: Context<UpdateLaunchpoolsConfigProtocolRewardShare>, new_protocol_reward_share_basis_points: u16) -> Result<()>{
+        update_launchpools_config_protocol_reward_share::handler(ctx, new_protocol_reward_share_basis_points)
+    }
+
+    pub fn update_launchpools_config_reward_authority(ctx: Context<UpdateLaunchpoolsConfigRewardAuthority>) -> Result<()>{
+        update_launchpools_config_reward_authority::handler(ctx)
+    }
+
+    pub fn update_launchpools_configs_manager_authority(ctx: Context<UpdateLaunchpoolsConfigsManagerAuthority>) -> Result<()>{
+        update_launchpools_configs_manager_authority::handler(ctx)
+    }
+
+    pub fn update_launchpools_configs_manager_head_authority(ctx: Context<UpdateLaunchpoolsConfigsManagerHeadAuthority>) -> Result<()>{
+        update_launchpools_configs_manager_head_authority::handler(ctx)
+    }
+
+    pub fn initialize_launchpool(ctx: Context<InitializeLaunchpool>, initial_reward_amount: u64) -> Result<()>{
+        initialize_launchpool::handler(ctx, initial_reward_amount)
+    }
+
+    pub fn launch_launchpool(ctx: Context<LaunchLaunchpool>, start_timestamp: u64) -> Result<()>{
+        launch_launchpool::handler(ctx, start_timestamp)
+    }
+
+    pub fn open_stake_position(ctx: Context<OpenStakePosition>, stake_amount: u64) -> Result<()>{
+        open_stake_position::handler(ctx, stake_amount)
+    }
+
+    pub fn increase_stake_position(ctx: Context<IncreaseStakePosition>, stake_increase_amount: u64) -> Result<()>{
+        increase_stake_position::handler(ctx, stake_increase_amount)
+    }
+
+    pub fn close_stake_position(ctx: Context<CloseStakePosition>) -> Result<()>{
+        close_stake_position::handler(ctx)
+    }
+
+    pub fn collect_protocol_reward(ctx: Context<CollectProtocolReward>) -> Result<()>{
+        collect_protocol_reward::handler(ctx)
+    }
+}
