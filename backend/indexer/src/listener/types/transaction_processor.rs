@@ -28,11 +28,10 @@ impl<T: AnchorProgram + 'static> TransactionProcessor<T> {
             if logs[index].starts_with(&self.find) {
                 index += 1;
                 while index + 1 < logs.len() {
-                    if logs[index].starts_with("Event:") && logs[index + 1].starts_with("Program data:") {
+                    if logs[index].starts_with("Program log: Event:") && logs[index + 1].starts_with("Program data:") {
                         let base64_data = logs[index + 1]
-                            .trim_start_matches("Program data:")
+                            .trim_start_matches("Program data: ")
                             .trim();
-
                         let decoded = match base64.decode(base64_data){
                             Ok(decoded) => decoded,
                             Err(error) => {
@@ -40,7 +39,6 @@ impl<T: AnchorProgram + 'static> TransactionProcessor<T> {
                                 break;
                             }
                         };
-
                         let parsed = match T::try_deserialize(&decoded){
                             Ok(parsed) => parsed,
                             Err(error) => {

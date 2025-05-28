@@ -1,0 +1,35 @@
+services:
+  scylla:
+    image: scylladb/scylla:latest
+    container_name: scylla
+    command: --smp 1 --memory 750M
+    ports:
+      - "9042:9042"
+    networks:
+      - scylla-net
+    restart: unless-stopped
+    volumes:
+      - ./indexer-data:/var/lib/scylla
+      - ./cql-init:/scripts:ro
+
+  init-scylla:
+    image: bitnami/cassandra:latest
+    container_name: init-scylla
+    depends_on:
+      - scylla
+    networks:
+      - scylla-net
+    entrypoint: >
+      bash -c "
+        echo 'Waiting for Scylla to be ready...' &&
+        until cqlsh scylla 9042 -e 'SELECT now() FROM system.local'; do sleep 2; done &&
+        echo 'Running init script...' &&
+        cqlsh scylla 9042 -f ./scripts/init_launchpool_data.cql &&
+        cqlsh scylla 9042 -f ./scripts/init_liquidity_pool_data.cql
+      "
+    volumes:
+      - ./cql-init:/scripts:ro
+
+networks:
+  scylla-net:
+    driver: bridge

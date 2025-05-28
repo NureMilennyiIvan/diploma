@@ -8,6 +8,7 @@ tokio = { version = "1.45.1", features = ["full"] }
 async-trait = "0.1.88"
 futures = "0.3.31"
 
+uuid = { version = "1.17.0", features = ["v1"] }
 scylla = "1.2.0"
 solana-client = "2.2.7"
 solana-sdk = "2.2.2"
@@ -22,6 +23,7 @@ anyhow = "1.0.98"
 
 launchpool = { path = "../../onchain-clients/launchpool/rust" }
 liquidity-pool = { path = "../../onchain-clients/liquidity-pool/rust" }
+utilities = {path = "../../utilities", features = ["math"]}
 
 [dev-dependencies]
 faux = "0.1.12"

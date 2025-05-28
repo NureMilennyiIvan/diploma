@@ -14,6 +14,7 @@ use crate::macros::*;
 
 define_program_events_enum! {
     LAUNCHPOOL_ID,
+    #[derive(Debug)]
     pub enum LaunchpoolProgram {
         OpenStakePositionEvent = [43, 163, 16, 37, 74, 4, 209, 161],
         IncreaseStakePositionEvent = [121, 133, 109, 216, 234, 229, 196, 202],

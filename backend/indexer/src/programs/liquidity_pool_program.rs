@@ -6,6 +6,7 @@ use crate::macros::*;
 
 define_program_events_enum! {
     LIQUIDITY_POOL_ID,
+    #[derive(Debug)]
     pub enum LiquidityPoolProgram {
         SwapInCpAmmEvent = [167, 90, 102, 132, 142, 199, 241, 241],
         ProvideToCpAmmEvent = [169, 179, 105, 2, 40, 101, 75, 46],

@@ -18,7 +18,7 @@ impl<T: AnchorProgram + 'static> TransactionHandler<T> {
     }
     pub async fn handle_rpc_logs_response(&self, rpc_logs_response: RpcLogsResponse) -> AnyResult<()> {
         let RpcLogsResponse { logs, err, signature } = rpc_logs_response;
-        if err.is_none(){
+        if err.is_some(){
             return Ok(());
         }
         let events = self.transaction_processor.process_log(logs)?;

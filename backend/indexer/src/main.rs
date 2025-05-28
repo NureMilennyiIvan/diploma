@@ -2,6 +2,8 @@ use std::env;
 use std::str::FromStr;
 use std::sync::Arc;
 use anyhow::{Result as AnyResult};
+use scylla::client::session::Session;
+use scylla::client::session_builder::SessionBuilder;
 use solana_sdk::commitment_config::CommitmentLevel;
 use tokio::signal::unix::{signal, SignalKind};
 use tracing::{debug, info};
@@ -21,10 +23,30 @@ mod utils;
 async fn main() -> AnyResult<()> {
     dotenv::dotenv().ok();
     tracing_subscriber::fmt::init();
+    let scylla_uri = env::var("SCYLLA_URI").expect("SCYLLA_URI must be set");
+    let liquidity_pool_scylla_session: Session = SessionBuilder::new()
+        .known_node(
+            &scylla_uri
+        )
+        .use_keyspace(
+            env::var("LIQUIDITY_POOL_KEYSPACE").expect("LIQUIDITY_POOL_KEYSPACE must be set"),
+            false
+        )
+        .build()
+        .await?;
+    let launchpool_scylla_session: Session = SessionBuilder::new()
+        .known_node(
+            scylla_uri
+        )
+        .use_keyspace(
+            env::var("LAUNCHPOOL_KEYSPACE").expect("LAUNCHPOOL_KEYSPACE must be set"),
+            false
+        )
+        .build()
+        .await?;
 
     let liquidity_pool_listener_config = SolanaTransactionsListenerConfig::new(
         env::var("LIQUIDITY_POOL_PROGRAM_WSS_ENDPOINT").expect("LIQUIDITY_POOL_PROGRAM_WSS_ENDPOINT must be set"),
-
         LiquidityPoolProgram::PUBKEY.to_string(),
         CommitmentLevel::from_str(
             env::var("LIQUIDITY_POOL_PROGRAM_WS_COMMITMENT_LEVEL")
@@ -44,11 +66,11 @@ async fn main() -> AnyResult<()> {
 
     let liquidity_pool_transaction_handler: TransactionHandler<LiquidityPoolProgram> = TransactionHandler::new(
         TransactionProcessor::new(),
-        Box::new(ScyllaDbEventsSaver::new()),
+        Box::new(ScyllaDbEventsSaver::new(liquidity_pool_scylla_session)),
     );
     let launchpool_transaction_handler: TransactionHandler<LaunchpoolProgram> = TransactionHandler::new(
         TransactionProcessor::new(),
-        Box::new(ScyllaDbEventsSaver::new()),
+        Box::new(ScyllaDbEventsSaver::new(launchpool_scylla_session)),
     );
 
     let liquidity_pool_listener = Arc::new(SolanaTransactionsListener::new(liquidity_pool_listener_config, liquidity_pool_transaction_handler));
