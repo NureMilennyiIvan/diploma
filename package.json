@@ -14,7 +14,6 @@
   "workspaces": [
     "onchain-clients/launchpool/js",
     "onchain-clients/liquidity-pool/js",
-    "onchain",
-    "web"
+    "onchain"
   ]
 }

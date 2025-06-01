@@ -25,6 +25,9 @@
 /backend/webserver/.env
 /backend/webserver/.env.cache
 
+/frontend/.next
+/frontend/node_modules
+
 /utilities/target/
 
 .env.routes

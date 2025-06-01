@@ -163,7 +163,7 @@ pub async fn launch_cp_amm_tx(
     cp_amm: Pubkey,
     base_liquidity: u64,
     quote_liquidity: u64,
-) -> AnyResult<UnsignedTransaction> {
+) -> AnyResult<(UnsignedTransaction, Pubkey)> {
     let cp_amm_keys = context.get_cp_amm_keys(&cp_amm).await?;
     let (lp_mint_account, base_mint_account, quote_mint_account) = tokio::try_join!(
         context.get_token_mint(&cp_amm_keys.lp_mint),
@@ -171,7 +171,7 @@ pub async fn launch_cp_amm_tx(
         context.get_token_mint(&cp_amm_keys.quote_mint),
     )?;
     let blockhash = context.solana_rpc_client().get_blockhash().await?;
-    let ix = launch_cp_amm_ix(
+    let (ix, cp_amm_pubkey) = launch_cp_amm_ix(
         creator,
         creator_base_account,
         creator_quote_account,
@@ -186,12 +186,12 @@ pub async fn launch_cp_amm_tx(
         base_liquidity,
         quote_liquidity,
     );
-    Ok(build_unsigned_transaction(
+    Ok((build_unsigned_transaction(
         &creator,
         [set_compute_budget_ix(250_000), ix],
         blockhash,
         [],
-    ))
+    ), cp_amm_pubkey))
 }
 pub async fn provide_to_cp_amm_tx(
     context: &LiquidityPoolContext,

@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import {config as loadEnv} from "dotenv";
-import {createTestUser, post, postBase64Tx, postBase64TxAndPubkey, requireEnv, RpcClient} from "../../helpers";
+import {createTestUser,postBase64Tx, postBase64TxAndPubkey, requireEnv, RpcClient} from "../../helpers";
 import {
     Address,
     createKeyPairSignerFromBytes,
@@ -145,12 +145,12 @@ export const updateAmmsConfigFeeAuthority = async (
     amms_config: Address,
     new_fee_authority: Address,
     env: LiquidityPoolBackendIntegrationTestingEnvironment
-): Promise<string> => {
+): Promise<[string,string]> => {
     const route = env.routes.UPDATE_AMMS_CONFIG_FEE_AUTHORITY.replace(
         "{amms_config}",
         amms_config.toString()
     );
-    return postBase64Tx(env.baseUrl, env.routes.LIQUIDITY_POOL_SCOPE, route, {
+    return postBase64TxAndPubkey(env.baseUrl, env.routes.LIQUIDITY_POOL_SCOPE, route, {
         authority: authority.toString(),
         new_fee_authority: new_fee_authority.toString()
     });

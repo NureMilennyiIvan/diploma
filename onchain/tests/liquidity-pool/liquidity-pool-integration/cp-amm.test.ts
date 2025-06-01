@@ -483,7 +483,7 @@ export const cpAmmBackendIntegrationTests = (liquidityPoolTestingEnvironment: Li
             const baseLiquidity = BigInt(9_000_000_000_000_000);
             const quoteLiquidity = BigInt(43241);
 
-            const base64Tx = await launchCpAmm(
+            const [base64Tx, _] = await launchCpAmm(
                 user.address,
                 cpAmmAccount.address,
                 USER_TOKEN_ACCOUNTS.validToken1.address,
@@ -507,7 +507,7 @@ export const cpAmmBackendIntegrationTests = (liquidityPoolTestingEnvironment: Li
             const baseLiquidity = BigInt(23437123213686);
             const quoteLiquidity = BigInt(1_000_000_000_000_001);
 
-            const base64Tx = await launchCpAmm(
+            const [base64Tx, _] = await launchCpAmm(
                 user.address,
                 cpAmmAccount.address,
                 USER_TOKEN_ACCOUNTS.validToken1.address,
@@ -531,7 +531,7 @@ export const cpAmmBackendIntegrationTests = (liquidityPoolTestingEnvironment: Li
             const baseLiquidity = BigInt(212342403);
             const quoteLiquidity = BigInt(453247832);
 
-            const base64Tx = await launchCpAmm(
+            const [base64Tx, _] = await launchCpAmm(
                 generalUser.address,
                 cpAmmAccount.address,
                 GENERAL_USER_TOKEN_ACCOUNTS.validToken1.address,
@@ -563,7 +563,7 @@ export const cpAmmBackendIntegrationTests = (liquidityPoolTestingEnvironment: Li
             const totalLiquidity = BigInt(Math.floor(Math.sqrt(Number(baseLiquidity * quoteLiquidity))));
             const initialLockedLiquidity = BigInt(Math.pow(10, lpMintAccountBefore.data.decimals));
             const signersLiquidity = totalLiquidity - initialLockedLiquidity;
-            const base64Tx = await launchCpAmm(
+            const [base64Tx, _] = await launchCpAmm(
                 user.address,
                 cpAmmAccountBefore.address,
                 USER_TOKEN_ACCOUNTS.validToken1.address,
@@ -643,7 +643,7 @@ export const cpAmmBackendIntegrationTests = (liquidityPoolTestingEnvironment: Li
             const baseLiquidity = BigInt(212342403);
             const quoteLiquidity = BigInt(453247832);
 
-            const base64Tx = await launchCpAmm(
+            const [base64Tx, _] = await launchCpAmm(
                 user.address,
                 cpAmmAccountBefore.address,
                 USER_TOKEN_ACCOUNTS.validToken1.address,
@@ -667,7 +667,7 @@ export const cpAmmBackendIntegrationTests = (liquidityPoolTestingEnvironment: Li
             const baseLiquidity = BigInt(159999);
             const quoteLiquidity = BigInt(999999);
 
-            const base64Tx = await launchCpAmm(
+            const [base64Tx, _] = await launchCpAmm(
                 user.address,
                 cpAmmAccountBefore.address,
                 USER_TOKEN_ACCOUNTS.validToken2.address,
@@ -701,7 +701,7 @@ export const cpAmmBackendIntegrationTests = (liquidityPoolTestingEnvironment: Li
             const initialLockedLiquidity = BigInt(Math.pow(10, lpMintAccountBefore.data.decimals));
             const signersLiquidity = totalLiquidity - initialLockedLiquidity;
 
-            const base64Tx = await launchCpAmm(
+            const [base64Tx, _] = await launchCpAmm(
                 user.address,
                 cpAmmAccountBefore.address,
                 USER_TOKEN_ACCOUNTS.validToken2.address,
@@ -803,7 +803,7 @@ export const cpAmmBackendIntegrationTests = (liquidityPoolTestingEnvironment: Li
             const initialLockedLiquidity = BigInt(Math.pow(10, lpMintAccountBefore.data.decimals));
             const signersLiquidity = totalLiquidity - initialLockedLiquidity;
 
-            const base64Tx = await launchCpAmm(
+            const [base64Tx, _] = await launchCpAmm(
                 user.address,
                 cpAmmAccountBefore.address,
                 USER_TOKEN_ACCOUNTS.validToken2.address,

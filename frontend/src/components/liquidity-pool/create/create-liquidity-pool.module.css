@@ -1,0 +1,164 @@
+.createLiquidityPoolForm {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    background: var(--background-dark);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-primary);
+}
+
+.title {
+    font-size: 1.8em;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--text-secondary);
+}
+
+.paragraph {
+    margin: 10px 0;
+    color: var(--text-muted);
+    font-size: 0.95em;
+    text-align: center;
+}
+
+.error {
+    color: var(--button-primary-active);
+    font-size: 0.9em;
+    margin-top: 5px;
+    text-align: center;
+}
+
+.label {
+    font-weight: bold;
+    color: var(--text-secondary);
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1em;
+}
+
+.select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid var(--divider);
+    background: var(--background-card);
+    color: var(--text-primary);
+    font-size: 1em;
+}
+
+.inputNumber {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: 1px solid var(--divider);
+    background: var(--background-card);
+    color: var(--text-primary);
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+.percentageButtons {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+.percentageButton {
+    flex-grow: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    background: var(--button-primary);
+    color: var(--text-primary);
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.percentageButton:hover {
+    background: var(--button-primary-hover);
+    transform: scale(1.05);
+}
+
+.percentageButton:active {
+    background: var(--button-primary-active);
+}
+
+.range {
+    width: 100%;
+    -webkit-appearance: none;
+    background: var(--divider);
+    height: 6px;
+    border-radius: 3px;
+    outline: none;
+    cursor: pointer;
+}
+
+.range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: var(--button-primary);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.range:hover::-webkit-slider-thumb {
+    background: var(--button-primary-hover);
+}
+
+.button {
+    width: 100%;
+    padding: 15px;
+    margin-top: 20px;
+    font-size: 1.2em;
+    font-weight: bold;
+    text-align: center;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    background: var(--button-primary);
+    color: var(--text-primary);
+}
+
+.button:hover {
+    background: var(--button-primary-hover);
+    transform: scale(1.03);
+}
+
+.button:active {
+    background: var(--button-primary-active);
+    transform: scale(0.98);
+}
+
+.button:disabled {
+    background: var(--divider);
+    color: var(--text-muted);
+    cursor: not-allowed;
+    transform: none;
+}
+
+.utils {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin: 30px 0;
+    font-size: 1em;
+    color: var(--text-primary);
+    gap: 10px;
+    font-weight: bold;
+}
+.utilsText {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}

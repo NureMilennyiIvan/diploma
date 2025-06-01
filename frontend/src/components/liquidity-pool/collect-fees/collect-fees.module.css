@@ -1,0 +1,16 @@
+.buttonContainer {
+    position: relative;
+}
+.harvestButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 1.2em;
+    margin-left: 10px;
+    transition: transform 0.3s ease;
+}
+.icon {
+    font-size: 1.2em;
+    color: var(--text-muted);
+}

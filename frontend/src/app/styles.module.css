@@ -1,0 +1,89 @@
+.pageContainer {
+    padding: 20px;
+    background: var(--background-dark);
+    min-height: calc(100vh - var(--header-height) - var(--footer-height));
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.createButton {
+    background: var(--button-primary);
+    color: var(--text-primary);
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.createButton:hover {
+    background: var(--button-primary-hover);
+    transform: scale(1.05);
+}
+
+.createButton:active {
+    background: var(--button-primary-active);
+}
+
+.message {
+    color: var(--text-muted);
+    text-align: center;
+    font-size: 1.2em;
+}
+
+.error {
+    color: var(--button-primary-active);
+    text-align: center;
+    font-size: 1.2em;
+}
+
+.tableContainer {
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--background-card);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+}
+
+.table th,
+.table td {
+    padding: 25px 20px;
+    text-align: center;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--divider);
+    color: var(--text-primary);
+    font-size: 1.1em;
+    white-space: nowrap;
+}
+
+.table th {
+    font-weight: bold;
+    background: var(--background-dark);
+}
+
+.tableRow {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    height: 50px;
+    padding: 50px 0;
+}
+
+.tableRow:hover {
+    background: var(--table-row-hover);
+}
+
+.tableRow td {
+    vertical-align: middle;
+}

@@ -155,7 +155,7 @@ pub fn launch_cp_amm_ix(
     lp_token_program: Pubkey,
     base_liquidity: u64,
     quote_liquidity: u64,
-) -> Instruction {
+) -> (Instruction, Pubkey) {
     let mut builder = LaunchCpAmmBuilder::new();
     builder.amms_config(amms_config);
     builder.creator_base_account(
@@ -169,7 +169,7 @@ pub fn launch_cp_amm_ix(
     builder.cp_amm_base_vault(get_cp_amm_vault_pda(&cp_amm, &base_mint).0);
     builder.cp_amm_quote_vault(get_cp_amm_vault_pda(&cp_amm, &quote_mint).0);
     builder.cp_amm_locked_lp_vault(get_cp_amm_vault_pda(&cp_amm, &lp_mint).0);
-    builder.cp_amm(cp_amm);
+    builder.cp_amm(cp_amm.clone());
     builder.base_mint(base_mint);
     builder.quote_mint(quote_mint);
     builder.lp_mint(lp_mint);
@@ -180,7 +180,7 @@ pub fn launch_cp_amm_ix(
     builder.associated_token_program(ASSOCIATED_TOKEN_PROGRAM_ID);
     builder.base_liquidity(base_liquidity);
     builder.quote_liquidity(quote_liquidity);
-    builder.instruction()
+    (builder.instruction(), cp_amm)
 }
 
 pub fn provide_to_cp_amm_ix(

@@ -1,0 +1,37 @@
+.colors {
+    /* Backgrounds */
+    --background-dark: #0d111c;
+    --background-card: #182233;
+    --background-input: #1c2a3e;
+    --background-hover: #24364e;
+
+    /* Text */
+    --text-primary: #f3f8ff;
+    --text-secondary: #8da1c6;
+    --text-muted: #5c6980;
+    --text-accent: #9edfff;
+
+    /* Buttons */
+    --button-primary: #29d9aa;
+    --button-primary-hover: #22c89b;
+    --button-primary-active: #1ca485;
+
+    --button-secondary: #394b71;
+    --button-secondary-hover: #49608f;
+    --button-secondary-active: #31415c;
+
+    --divider: #2d3b52;
+
+    /* Accents */
+    --accent-light-blue: #39aaf4;
+    --accent-error: #ff5e6c;
+    --accent-success: #36d399;
+    --accent-warning: #ffb547;
+
+    /* Shadow */
+    --shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    --shadow-hover: 0 10px 25px rgba(0, 0, 0, 0.6);
+
+    /* Misc */
+    --table-row-hover: rgba(41, 217, 170, 0.1);
+}

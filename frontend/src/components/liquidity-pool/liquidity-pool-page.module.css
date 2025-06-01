@@ -1,0 +1,265 @@
+.liquidityPoolCard {
+    background: var(--background-dark);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    max-width: 600px;
+    margin: auto;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.modeSelector {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px;
+    background: var(--background-card);
+    border-radius: 10px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.modeSelector button {
+    flex-grow: 1;
+    background: var(--button-secondary);
+    color: var(--text-primary);
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-align: center;
+}
+
+.modeSelector button:first-child {
+    margin-left: 0;
+}
+
+.modeSelector button:last-child {
+    margin-right: 0;
+}
+
+.modeSelector button.active {
+    background: var(--button-secondary-hover);
+    transform: scale(1.05);
+}
+
+.modeSelector button:hover {
+    background: var(--button-secondary-hover);
+}
+
+.liquidityPoolPageForm {
+    max-width: 100%;
+    min-height: 500px;
+    padding: 20px;
+    background: var(--background-dark);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-primary);
+}
+
+.field {
+    margin-bottom: 20px;
+}
+
+.field label,
+.baseContainer label {
+    font-weight: bold;
+    color: var(--text-secondary);
+    font-size: 1em;
+}
+
+.bottomContainer {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+
+.inputContainer {
+    display: flex;
+    align-items: center;
+    background-color: var(--background-card);
+    border: 1px solid var(--divider);
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px 0;
+    width: inherit;
+}
+
+.inputContainer input {
+    flex-grow: 1;
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-size: 1em;
+    padding: 0;
+    outline: none;
+}
+
+.tokenSymbol {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-light-blue);
+    font-weight: bold;
+    font-size: 1em;
+    padding: 8px;
+    border-radius: 8px;
+    margin-right: 10px;
+    white-space: nowrap;
+}
+
+.balance {
+    font-size: 0.9em;
+    color: var(--text-muted);
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+}
+
+.percentageButtons {
+    display: flex;
+    gap: 10px;
+}
+
+.percentageButtons button {
+    padding: 8px 12px;
+    border: none;
+    background: var(--button-secondary);
+    color: var(--text-primary);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.percentageButtons button:hover {
+    background: var(--button-secondary-hover);
+    transform: scale(1.05);
+}
+
+.reverseButtonContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5px 0;
+}
+
+.reverseButton {
+    border: none;
+    width: 24px;
+    height: 24px;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease;
+}
+
+.reverseIcon {
+    color: var(--text-muted);
+    font-size: 24px;
+}
+
+.syncIcon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 1.2em;
+    margin-left: 10px;
+    transition: transform 0.3s ease;
+}
+
+.syncIcon:hover {
+    transform: rotate(180deg);
+}
+
+.actionButton {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.2em;
+    font-weight: bold;
+    text-align: center;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    background: var(--button-primary);
+    color: var(--text-primary);
+}
+
+.actionButton:hover {
+    background: var(--button-primary-hover);
+    transform: scale(1.03);
+}
+
+.actionButton:active {
+    background: var(--button-primary-active);
+    transform: scale(0.98);
+}
+
+.actionButton.disabled {
+    background: var(--divider);
+    color: var(--text-muted);
+    cursor: not-allowed;
+    transform: none;
+}
+
+.divider {
+    border: none;
+    height: 1px;
+    background-color: var(--divider);
+    margin: 10px 0;
+}
+
+.detailsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 0.9em;
+    color: var(--text-muted);
+}
+
+.detail {
+    display: flex;
+    justify-content: space-between;
+}
+
+.buttonContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 30px 0 10px 0;
+}
+
+
+.utils {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin: 30px 0;
+    font-size: 1em;
+    color: var(--text-primary);
+    gap: 10px;
+    font-weight: bold;
+}
+.utilsText {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.utilsButton {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}

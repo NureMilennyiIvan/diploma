@@ -186,7 +186,7 @@ pub(crate) async fn get_launch_cp_amm_tx(
         quote_liquidity,
     )
     .await
-    .and_then(|tx| tx.to_base64());
+    .and_then(|(tx, cp_amm)| tx.to_base64().map(|tx_str| (tx_str, cp_amm.to_string())));
     send_result(result)
 }
 
