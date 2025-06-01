@@ -1,6 +1,8 @@
-use anchor_lang::{AnchorDeserialize, AnchorSerialize, prelude::borsh, InitSpace};
 use std::ops::{Add, Div, Mul, Sub};
 use super::{U384, U192};
+
+#[cfg(feature = "solana")]
+use anchor_lang::{AnchorDeserialize, AnchorSerialize, prelude::borsh, InitSpace};
 
 /// Represents a fixed-point number with 64 integer bits and 128 fractional bits.
 ///
@@ -11,7 +13,8 @@ use super::{U384, U192};
 ///
 /// This type provides utilities for fixed-point arithmetic, conversions from primitive types,
 /// and accessing the integer and fractional components of the value.
-#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Default, AnchorSerialize, AnchorDeserialize, InitSpace)]
+#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Default)]
+#[cfg_attr(feature = "solana", derive(AnchorSerialize, AnchorDeserialize, InitSpace))]
 pub struct Q64_128 {
 	/// The internal representation of the fixed-point value as a 192-bit unsigned integer.
 	value: U192,
@@ -48,7 +51,7 @@ impl Q64_128 {
 	///
 	/// # Returns
 	/// A new `Q64_128` instance.
-	pub(super) const fn new(value: U192) -> Self {
+	pub const fn new(value: U192) -> Self {
 		Q64_128 { value }
 	}
 
@@ -189,6 +192,27 @@ impl Q64_128 {
 		let fractional_part = ((value - integer_part as f64) * Self::FRACTIONAL_SCALE).round() as u128;
 		Some(Self::from_bits(integer_part, fractional_part))
 	}
+
+	/// Serializes the Q64_128 value to a 24-byte little-endian array.
+	pub fn to_le_bytes(&self) -> [u8; 24] {
+		self.value.to_little_endian()
+	}
+
+	/// Deserializes a 24-byte little-endian array into Q64_128.
+	pub fn from_le_bytes(bytes: [u8; 24]) -> Self {
+		Self::new(U192::from_little_endian(&bytes))
+	}
+
+	/// Serializes the Q64_128 value to a 24-byte big-endian array.
+	pub fn to_be_bytes(&self) -> [u8; 24] {
+		self.value.to_big_endian()
+	}
+
+	/// Deserializes a 24-byte big-endian array into Q64_128.
+	pub fn from_be_bytes(bytes: [u8; 24]) -> Self {
+		Self::new(U192::from_little_endian(&bytes))
+	}
+
 }
 
 /// Implements conversion from `U384` to `Q64_128`.
@@ -557,6 +581,39 @@ mod tests {
 	/// Unit tests for the `Q64_128`.
 	mod unit_tests{
 		use super::*;
+		#[cfg(feature = "solana")]
+		mod blockchain {
+			use anchor_lang::{AnchorDeserialize, AnchorSerialize};
+			use crate::math::Q64_128;
+
+			#[test]
+			fn test_anchor_integrity() {
+				let original = Q64_128::from_u64(234234);
+
+				let mut buf = Vec::new();
+				Q64_128::serialize(&original, &mut buf).unwrap();
+
+				let deserialized = Q64_128::deserialize(&mut buf.as_slice()).unwrap();
+				println!("original={:?}, deserialized={:?}", original, deserialized);
+				assert_eq!(original, deserialized);
+
+				let le_bytes = original.to_le_bytes();
+				let from_le = Q64_128::from_le_bytes(le_bytes);
+				let be_bytes = from_le.to_be_bytes();
+
+				let deserialized_cross= Q64_128::deserialize(&mut be_bytes.as_slice());
+
+
+				match deserialized_cross {
+					Ok(value) => {
+						assert_eq!(Q64_128::from_be_bytes(value.to_be_bytes()), original, "Cross serialization (LE → BE → Anchor deserialize) failed");
+					}
+					Err(e) => {
+						panic!("Deserialization of BE bytes as Anchor failed: {:?}", e);
+					}
+				}
+			}
+		}
 		mod constructors_and_conversions {
 			use super::*;
 

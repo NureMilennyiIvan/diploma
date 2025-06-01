@@ -5,7 +5,9 @@ import {
     CompilableTransactionMessage,
     createTransactionMessage,
     generateKeyPairSigner,
+    getBase64EncodedWireTransaction,
     getSignatureFromTransaction,
+    getTransactionDecoder,
     IInstruction,
     KeyPairSigner,
     lamports,
@@ -14,7 +16,9 @@ import {
     RpcSubscriptions,
     sendAndConfirmTransactionFactory,
     setTransactionMessageFeePayerSigner,
-    setTransactionMessageLifetimeUsingBlockhash, Signature,
+    setTransactionMessageLifetimeUsingBlockhash,
+    Signature,
+    signTransaction,
     signTransactionMessageWithSigners,
     SolanaRpcApi,
     SolanaRpcSubscriptionsApi,
@@ -22,6 +26,7 @@ import {
 } from "@solana/kit";
 import {getSetComputeUnitLimitInstruction} from "@solana-program/compute-budget";
 import {U192} from "@liquidity-pool/js";
+
 
 const LAMPORTS_PER_SOL = 1_000_000_000;
 /**
@@ -114,7 +119,7 @@ export const signAndSendTransaction = async (
  * @returns {Promise<readonly string[]>} - The transaction logs.
  */
 export const getTransactionLogs = async (rpcClient: RpcClient, signature: Signature): Promise<readonly string[]> => {
-    return (await rpcClient.rpc.getTransaction(signature, {encoding: "base64", maxSupportedTransactionVersion: 0}).send()).meta?.logMessages;
+    return (await rpcClient.rpc.getTransaction(signature, {encoding: "base64", maxSupportedTransactionVersion: 0, commitment: "confirmed"}).send()).meta?.logMessages;
 };
 
 export const delay = (seconds: number) => new Promise((res) => setTimeout(res, seconds * 1000));
@@ -128,3 +133,83 @@ export const compareU192 = (a: U192, b: U192): number => {
     }
     return 0;
 }
+
+export const post = async (
+    baseUrl: string,
+    scope: string,
+    route: string,
+    payload: any
+): Promise<unknown> => {
+    const fullUrl = `${baseUrl}${scope}${route}`;
+    const response = await fetch(fullUrl, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+        const text = await response.text();
+        throw new Error(`Request failed: ${response.status} - ${text}`);
+    }
+
+    return await response.json();
+};
+export const postBase64Tx = async (
+    baseUrl: string,
+    scope: string,
+    route: string,
+    payload: any
+): Promise<string> => {
+    const result = await post(baseUrl, scope, route, payload);
+
+    if (typeof result !== "string") {
+        throw new Error("Expected base64 transaction string response");
+    }
+
+    return result;
+};
+export const postBase64TxAndPubkey = async (
+    baseUrl: string,
+    scope: string,
+    route: string,
+    payload: any
+): Promise<[string, string]> => {
+    const result = await post(baseUrl, scope, route, payload);
+
+    if (!Array.isArray(result) || result.length !== 2 || typeof result[0] !== "string" || typeof result[1] !== "string") {
+        throw new Error("Expected [base64_tx, pubkey] string tuple response");
+    }
+
+    return result as [string, string];
+};
+
+export const requireEnv = (key: string) => {
+    const value = process.env[key];
+    if (!value) {
+        throw new Error(`Missing required environment variable: ${key}`);
+    }
+    return value;
+}
+
+export const decodeSignAndSimulate = async (
+    base64Tx: string,
+    signers: KeyPairSigner[],
+    rpcClient: RpcClient
+): Promise<string[]> => {
+    const transaction = getTransactionDecoder().decode(Buffer.from(base64Tx, "base64"));
+    const signedTx = await signTransaction(signers.map(s => s.keyPair), transaction);
+    const wireTx = getBase64EncodedWireTransaction(signedTx);
+    let res = await rpcClient.rpc.simulateTransaction(wireTx, { encoding: "base64" }).send();
+    return res.value.logs
+};
+
+export const decodeSignAndSend = async (
+    base64Tx: string,
+    signers: KeyPairSigner[],
+    rpcClient: RpcClient
+): Promise<Signature> => {
+    const transaction = getTransactionDecoder().decode(Buffer.from(base64Tx, "base64"));
+    const signedTx = await signTransaction(signers.map(s => s.keyPair), transaction);
+    const wireTx = getBase64EncodedWireTransaction(signedTx);
+    return await rpcClient.rpc.sendTransaction(wireTx, { encoding: "base64" }).send();
+};

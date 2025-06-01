@@ -174,7 +174,7 @@ export type CloseStakePositionAsyncInput<
   TAccountAssociatedTokenProgram extends string = string,
 > = {
   signer: TransactionSigner<TAccountSigner>;
-  signerRewardAccount: Address<TAccountSignerRewardAccount>;
+  signerRewardAccount?: Address<TAccountSignerRewardAccount>;
   signerStakableAccount: Address<TAccountSignerStakableAccount>;
   launchpoolsConfig: Address<TAccountLaunchpoolsConfig>;
   stakableMint: Address<TAccountStakableMint>;
@@ -291,6 +291,19 @@ export async function getCloseStakePositionInstructionAsync<
   >;
 
   // Resolve default values.
+  if (!accounts.signerRewardAccount.value) {
+    accounts.signerRewardAccount.value = await getProgramDerivedAddress({
+      programAddress:
+        'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL' as Address<'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL'>,
+      seeds: [
+        getAddressEncoder().encode(expectAddress(accounts.signer.value)),
+        getAddressEncoder().encode(
+          expectAddress(accounts.rewardTokenProgram.value)
+        ),
+        getAddressEncoder().encode(expectAddress(accounts.rewardMint.value)),
+      ],
+    });
+  }
   if (!accounts.stakeVault.value) {
     accounts.stakeVault.value = await getProgramDerivedAddress({
       programAddress,

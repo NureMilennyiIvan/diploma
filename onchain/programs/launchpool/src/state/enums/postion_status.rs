@@ -1,11 +1,12 @@
 use std::fmt::{Display, Formatter, Result as FmtResult};
 use anchor_lang::prelude::*;
+#[repr(u8)]
 #[derive(AnchorSerialize, AnchorDeserialize, InitSpace, Clone, Copy, PartialEq, Eq, Debug)]
 pub enum PositionStatus {
-    Uninitialized,
-    Initialized,
-    Opened,
-    Closed,
+    Uninitialized = 0,
+    Initialized = 1,
+    Opened = 2,
+    Closed = 3,
 }
 impl Display for PositionStatus {
     fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {

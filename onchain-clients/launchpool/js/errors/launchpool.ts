@@ -14,84 +14,60 @@ import {
 } from '@solana/kit';
 import { LAUNCHPOOL_PROGRAM_ADDRESS } from '../programs';
 
-/** InvalidInitialRewardAmount: Invalid initial reward amount provided during initialization. */
-export const LAUNCHPOOL_ERROR__INVALID_INITIAL_REWARD_AMOUNT = 0x1770; // 6000
-/** LaunchpoolAlreadyInitialized: Launchpool is already initialized. */
-export const LAUNCHPOOL_ERROR__LAUNCHPOOL_ALREADY_INITIALIZED = 0x1771; // 6001
-/** LaunchpoolNotLaunched: Launchpool must be in 'Launched' status. */
-export const LAUNCHPOOL_ERROR__LAUNCHPOOL_NOT_LAUNCHED = 0x1772; // 6002
-/** LaunchpoolNotStartedYet: Launchpool has not started yet. */
-export const LAUNCHPOOL_ERROR__LAUNCHPOOL_NOT_STARTED_YET = 0x1773; // 6003
-/** LaunchpoolAlreadyEnded: Launchpool has already ended. */
-export const LAUNCHPOOL_ERROR__LAUNCHPOOL_ALREADY_ENDED = 0x1774; // 6004
-/** LaunchpoolNotEndedYet: Launchpool has not ended yet. */
-export const LAUNCHPOOL_ERROR__LAUNCHPOOL_NOT_ENDED_YET = 0x1775; // 6005
-/** LaunchpoolNotFinished: Launchpool is not finished yet. */
-export const LAUNCHPOOL_ERROR__LAUNCHPOOL_NOT_FINISHED = 0x1776; // 6006
-/** LaunchpoolNotInitialized: Launchpool is not initialized. */
-export const LAUNCHPOOL_ERROR__LAUNCHPOOL_NOT_INITIALIZED = 0x1777; // 6007
-/** StartTimeInPast: Provided start time is in the past. */
-export const LAUNCHPOOL_ERROR__START_TIME_IN_PAST = 0x1778; // 6008
-/** EndTimeOverflow: Overflow occurred when calculating end time. */
-export const LAUNCHPOOL_ERROR__END_TIME_OVERFLOW = 0x1779; // 6009
-/** EffectiveTimeBeforeLastAccrual: Effective time is before the last update timestamp. */
-export const LAUNCHPOOL_ERROR__EFFECTIVE_TIME_BEFORE_LAST_ACCRUAL = 0x177a; // 6010
-/** RewardCalculationOverflow: Overflow occurred during reward calculation. */
-export const LAUNCHPOOL_ERROR__REWARD_CALCULATION_OVERFLOW = 0x177b; // 6011
-/** DivisionByZeroDuringRewardCalculation: Division by zero during reward calculation. */
-export const LAUNCHPOOL_ERROR__DIVISION_BY_ZERO_DURING_REWARD_CALCULATION = 0x177c; // 6012
-/** RewardRateOverflow: Overflow occurred while calculating reward rate. */
-export const LAUNCHPOOL_ERROR__REWARD_RATE_OVERFLOW = 0x177d; // 6013
-/** RewardPerTokenOverflow: Overflow occurred while updating reward per token. */
-export const LAUNCHPOOL_ERROR__REWARD_PER_TOKEN_OVERFLOW = 0x177e; // 6014
-/** StakedAmountOverflow: Overflow occurred while updating staked amount. */
-export const LAUNCHPOOL_ERROR__STAKED_AMOUNT_OVERFLOW = 0x177f; // 6015
-/** RewardDistributionOverflow: Overflow occurred while distributing rewards. */
-export const LAUNCHPOOL_ERROR__REWARD_DISTRIBUTION_OVERFLOW = 0x1780; // 6016
-/** RewardObtentionOverflow: Overflow occurred while redeeming participant rewards. */
-export const LAUNCHPOOL_ERROR__REWARD_OBTENTION_OVERFLOW = 0x1781; // 6017
+/** StakePositionAlreadyInitialized: Stake position is already initialized. */
+export const LAUNCHPOOL_ERROR__STAKE_POSITION_ALREADY_INITIALIZED = 0x1770; // 6000
+/** InvalidStakePositionStateForOpen: Invalid state for opening a stake position. */
+export const LAUNCHPOOL_ERROR__INVALID_STAKE_POSITION_STATE_FOR_OPEN = 0x1771; // 6001
+/** StakePositionNotOpened: Stake position is not opened. */
+export const LAUNCHPOOL_ERROR__STAKE_POSITION_NOT_OPENED = 0x1772; // 6002
+/** MismatchedLaunchpool: Launchpool provided does not match the one stored in the position. */
+export const LAUNCHPOOL_ERROR__MISMATCHED_LAUNCHPOOL = 0x1773; // 6003
+/** StakeAmountIsZero: Stake amount must be greater than zero. */
+export const LAUNCHPOOL_ERROR__STAKE_AMOUNT_IS_ZERO = 0x1774; // 6004
+/** StakeBelowMinimum: Stake amount is below the minimum allowed. */
+export const LAUNCHPOOL_ERROR__STAKE_BELOW_MINIMUM = 0x1775; // 6005
+/** StakeAboveMaximum: Stake amount exceeds the maximum allowed. */
+export const LAUNCHPOOL_ERROR__STAKE_ABOVE_MAXIMUM = 0x1776; // 6006
+/** RewardAccumulationOverflow: Overflow occurred during reward accumulation. */
+export const LAUNCHPOOL_ERROR__REWARD_ACCUMULATION_OVERFLOW = 0x1777; // 6007
+/** RewardDebtExceedsAccrued: Reward debt is greater than total accrued reward. */
+export const LAUNCHPOOL_ERROR__REWARD_DEBT_EXCEEDS_ACCRUED = 0x1778; // 6008
+/** RewardOverflow: Overflow occurred while adding pending reward. */
+export const LAUNCHPOOL_ERROR__REWARD_OVERFLOW = 0x1779; // 6009
+/** StakeOverflow: Overflow occurred while increasing staked amount. */
+export const LAUNCHPOOL_ERROR__STAKE_OVERFLOW = 0x177a; // 6010
+/** RewardDebtCalculationOverflow: Overflow occurred while calculating reward debt. */
+export const LAUNCHPOOL_ERROR__REWARD_DEBT_CALCULATION_OVERFLOW = 0x177b; // 6011
 
 export type LaunchpoolError =
-  | typeof LAUNCHPOOL_ERROR__DIVISION_BY_ZERO_DURING_REWARD_CALCULATION
-  | typeof LAUNCHPOOL_ERROR__EFFECTIVE_TIME_BEFORE_LAST_ACCRUAL
-  | typeof LAUNCHPOOL_ERROR__END_TIME_OVERFLOW
-  | typeof LAUNCHPOOL_ERROR__INVALID_INITIAL_REWARD_AMOUNT
-  | typeof LAUNCHPOOL_ERROR__LAUNCHPOOL_ALREADY_ENDED
-  | typeof LAUNCHPOOL_ERROR__LAUNCHPOOL_ALREADY_INITIALIZED
-  | typeof LAUNCHPOOL_ERROR__LAUNCHPOOL_NOT_ENDED_YET
-  | typeof LAUNCHPOOL_ERROR__LAUNCHPOOL_NOT_FINISHED
-  | typeof LAUNCHPOOL_ERROR__LAUNCHPOOL_NOT_INITIALIZED
-  | typeof LAUNCHPOOL_ERROR__LAUNCHPOOL_NOT_LAUNCHED
-  | typeof LAUNCHPOOL_ERROR__LAUNCHPOOL_NOT_STARTED_YET
-  | typeof LAUNCHPOOL_ERROR__REWARD_CALCULATION_OVERFLOW
-  | typeof LAUNCHPOOL_ERROR__REWARD_DISTRIBUTION_OVERFLOW
-  | typeof LAUNCHPOOL_ERROR__REWARD_OBTENTION_OVERFLOW
-  | typeof LAUNCHPOOL_ERROR__REWARD_PER_TOKEN_OVERFLOW
-  | typeof LAUNCHPOOL_ERROR__REWARD_RATE_OVERFLOW
-  | typeof LAUNCHPOOL_ERROR__STAKED_AMOUNT_OVERFLOW
-  | typeof LAUNCHPOOL_ERROR__START_TIME_IN_PAST;
+  | typeof LAUNCHPOOL_ERROR__INVALID_STAKE_POSITION_STATE_FOR_OPEN
+  | typeof LAUNCHPOOL_ERROR__MISMATCHED_LAUNCHPOOL
+  | typeof LAUNCHPOOL_ERROR__REWARD_ACCUMULATION_OVERFLOW
+  | typeof LAUNCHPOOL_ERROR__REWARD_DEBT_CALCULATION_OVERFLOW
+  | typeof LAUNCHPOOL_ERROR__REWARD_DEBT_EXCEEDS_ACCRUED
+  | typeof LAUNCHPOOL_ERROR__REWARD_OVERFLOW
+  | typeof LAUNCHPOOL_ERROR__STAKE_ABOVE_MAXIMUM
+  | typeof LAUNCHPOOL_ERROR__STAKE_AMOUNT_IS_ZERO
+  | typeof LAUNCHPOOL_ERROR__STAKE_BELOW_MINIMUM
+  | typeof LAUNCHPOOL_ERROR__STAKE_OVERFLOW
+  | typeof LAUNCHPOOL_ERROR__STAKE_POSITION_ALREADY_INITIALIZED
+  | typeof LAUNCHPOOL_ERROR__STAKE_POSITION_NOT_OPENED;
 
 let launchpoolErrorMessages: Record<LaunchpoolError, string> | undefined;
 if (process.env.NODE_ENV !== 'production') {
   launchpoolErrorMessages = {
-    [LAUNCHPOOL_ERROR__DIVISION_BY_ZERO_DURING_REWARD_CALCULATION]: `Division by zero during reward calculation.`,
-    [LAUNCHPOOL_ERROR__EFFECTIVE_TIME_BEFORE_LAST_ACCRUAL]: `Effective time is before the last update timestamp.`,
-    [LAUNCHPOOL_ERROR__END_TIME_OVERFLOW]: `Overflow occurred when calculating end time.`,
-    [LAUNCHPOOL_ERROR__INVALID_INITIAL_REWARD_AMOUNT]: `Invalid initial reward amount provided during initialization.`,
-    [LAUNCHPOOL_ERROR__LAUNCHPOOL_ALREADY_ENDED]: `Launchpool has already ended.`,
-    [LAUNCHPOOL_ERROR__LAUNCHPOOL_ALREADY_INITIALIZED]: `Launchpool is already initialized.`,
-    [LAUNCHPOOL_ERROR__LAUNCHPOOL_NOT_ENDED_YET]: `Launchpool has not ended yet.`,
-    [LAUNCHPOOL_ERROR__LAUNCHPOOL_NOT_FINISHED]: `Launchpool is not finished yet.`,
-    [LAUNCHPOOL_ERROR__LAUNCHPOOL_NOT_INITIALIZED]: `Launchpool is not initialized.`,
-    [LAUNCHPOOL_ERROR__LAUNCHPOOL_NOT_LAUNCHED]: `Launchpool must be in 'Launched' status.`,
-    [LAUNCHPOOL_ERROR__LAUNCHPOOL_NOT_STARTED_YET]: `Launchpool has not started yet.`,
-    [LAUNCHPOOL_ERROR__REWARD_CALCULATION_OVERFLOW]: `Overflow occurred during reward calculation.`,
-    [LAUNCHPOOL_ERROR__REWARD_DISTRIBUTION_OVERFLOW]: `Overflow occurred while distributing rewards.`,
-    [LAUNCHPOOL_ERROR__REWARD_OBTENTION_OVERFLOW]: `Overflow occurred while redeeming participant rewards.`,
-    [LAUNCHPOOL_ERROR__REWARD_PER_TOKEN_OVERFLOW]: `Overflow occurred while updating reward per token.`,
-    [LAUNCHPOOL_ERROR__REWARD_RATE_OVERFLOW]: `Overflow occurred while calculating reward rate.`,
-    [LAUNCHPOOL_ERROR__STAKED_AMOUNT_OVERFLOW]: `Overflow occurred while updating staked amount.`,
-    [LAUNCHPOOL_ERROR__START_TIME_IN_PAST]: `Provided start time is in the past.`,
+    [LAUNCHPOOL_ERROR__INVALID_STAKE_POSITION_STATE_FOR_OPEN]: `Invalid state for opening a stake position.`,
+    [LAUNCHPOOL_ERROR__MISMATCHED_LAUNCHPOOL]: `Launchpool provided does not match the one stored in the position.`,
+    [LAUNCHPOOL_ERROR__REWARD_ACCUMULATION_OVERFLOW]: `Overflow occurred during reward accumulation.`,
+    [LAUNCHPOOL_ERROR__REWARD_DEBT_CALCULATION_OVERFLOW]: `Overflow occurred while calculating reward debt.`,
+    [LAUNCHPOOL_ERROR__REWARD_DEBT_EXCEEDS_ACCRUED]: `Reward debt is greater than total accrued reward.`,
+    [LAUNCHPOOL_ERROR__REWARD_OVERFLOW]: `Overflow occurred while adding pending reward.`,
+    [LAUNCHPOOL_ERROR__STAKE_ABOVE_MAXIMUM]: `Stake amount exceeds the maximum allowed.`,
+    [LAUNCHPOOL_ERROR__STAKE_AMOUNT_IS_ZERO]: `Stake amount must be greater than zero.`,
+    [LAUNCHPOOL_ERROR__STAKE_BELOW_MINIMUM]: `Stake amount is below the minimum allowed.`,
+    [LAUNCHPOOL_ERROR__STAKE_OVERFLOW]: `Overflow occurred while increasing staked amount.`,
+    [LAUNCHPOOL_ERROR__STAKE_POSITION_ALREADY_INITIALIZED]: `Stake position is already initialized.`,
+    [LAUNCHPOOL_ERROR__STAKE_POSITION_NOT_OPENED]: `Stake position is not opened.`,
   };
 }
 

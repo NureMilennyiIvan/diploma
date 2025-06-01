@@ -1,13 +1,15 @@
-use anchor_lang::{AnchorDeserialize, AnchorSerialize, prelude::borsh, Space};
 use uint::construct_uint;
 use super::{Q64_128};
 
+#[cfg(feature = "solana")]
+use anchor_lang::{AnchorSerialize, AnchorDeserialize, prelude::borsh,  Space};
+
 // Define a 192-bit unsigned integer with Anchor serialization/deserialization.
 construct_uint! {
-    #[derive(AnchorSerialize, AnchorDeserialize)]
+	#[cfg_attr(feature = "solana", derive(AnchorSerialize, AnchorDeserialize))]
     pub struct U192(3);
 }
-
+#[cfg(feature = "solana")]
 impl Space for U192 {
 	/// Space required for `U192` initialization in bytes.
 	const INIT_SPACE: usize = 24;
@@ -38,6 +40,24 @@ impl U192 {
 		Some(U192::from_big_endian(&value.to_big_endian()[24..]))
 	}
 }
+
+#[cfg(all(test, feature = "solana"))]
+mod tests {
+	use super::*;
+
+	#[test]
+	fn test_anchor_integrity() {
+		let original = U192([12, 432, 646]);
+
+		let mut buf = Vec::new();
+		AnchorSerialize::serialize(&original, &mut buf).unwrap();
+
+		let deserialized = AnchorDeserialize::deserialize(&mut buf.as_slice()).unwrap();
+
+		assert_eq!(original, deserialized);
+	}
+}
+
 
 // Define a 384-bit unsigned integer.
 construct_uint! {

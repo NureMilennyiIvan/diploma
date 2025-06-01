@@ -4,3 +4,29 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+tokio = { version = "1.45.1", features = ["full"] }
+async-trait = "0.1.88"
+futures = "0.3.31"
+axum = { version = "0.8.4", features = ["macros"] }
+
+moka = { version = "0.12.10", features = ["future"] }
+scylla = "1.2.0"
+solana-client = "2.2.7"
+solana-sdk = "2.2.2"
+serde = { version = "1.0.219", features = ["derive"] }
+
+tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
+tracing = "0.1.41"
+dotenv = "0.15.0"
+anyhow = "1.0.98"
+
+launchpool = { path = "../../onchain-clients/launchpool/rust" }
+liquidity-pool = { path = "../../onchain-clients/liquidity-pool/rust" }
+utilities = {path = "../../utilities", features = ["math"]}
+base64 = "0.22.1"
+spl-token = "8.0.0"
+
+[dev-dependencies]
+faux = "0.1.12"
+mockall = "0.13.1"
+proptest = "1.6.0"

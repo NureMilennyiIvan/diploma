@@ -6,11 +6,11 @@ use async_trait::async_trait;
 use launchpool::types::{LaunchpoolStatus, PositionStatus};
 use scylla::client::session::Session;
 use scylla::statement::batch::{Batch, BatchType};
-use scylla::value::{CqlTimeuuid};
+use scylla::value::CqlTimeuuid;
 use std::marker::PhantomData;
 use tracing::debug;
-use uuid::{Context, Timestamp, Uuid};
 use utilities::math::U192;
+use uuid::{Context, Timestamp, Uuid};
 
 pub struct ScyllaDbEventsSaver<T: AnchorProgram + 'static> {
     _phantom_data: PhantomData<T>,
@@ -91,10 +91,7 @@ impl EventsSaver<LiquidityPoolProgram> for ScyllaDbEventsSaver<LiquidityPoolProg
                         received_amount.as_slice(),
                         is_in_out,
                     ),
-                    (
-                        &cp_amm,
-                        liquidity.as_slice()
-                    )
+                    (&cp_amm, liquidity.as_slice()),
                 );
                 scylla_session.batch(&batch, values).await?;
                 debug!("Saving SwapInCpAmmEvent from signature {}", signature);
@@ -104,11 +101,9 @@ impl EventsSaver<LiquidityPoolProgram> for ScyllaDbEventsSaver<LiquidityPoolProg
                 scylla_session
                     .query_unpaged(
                         "INSERT INTO cp_amms_liquidity (cp_amm, liquidity) VALUES (?, ?)",
-                        (
-                            event.cp_amm.to_string(),
-                            liquidity.as_slice()
-                        )
-                    ).await?;
+                        (event.cp_amm.to_string(), liquidity.as_slice()),
+                    )
+                    .await?;
                 debug!("Saving ProvideToCpAmmEvent from signature {}", signature);
             }
             LiquidityPoolProgram::WithdrawFromCpAmmEvent(event) => {
@@ -116,16 +111,16 @@ impl EventsSaver<LiquidityPoolProgram> for ScyllaDbEventsSaver<LiquidityPoolProg
                 scylla_session
                     .query_unpaged(
                         "INSERT INTO cp_amms_liquidity (cp_amm, liquidity) VALUES (?, ?)",
-                        (
-                            event.cp_amm.to_string(),
-                            liquidity.as_slice()
-                        )
-                    ).await?;
+                        (event.cp_amm.to_string(), liquidity.as_slice()),
+                    )
+                    .await?;
                 debug!("Saving WithdrawFromCpAmmEvent from signature {}", signature);
             }
             LiquidityPoolProgram::CollectFeesFromCpAmmEvent(event) => {
-                let withdrawn_protocol_base_fees: [u8; 8] = event.withdrawn_protocol_base_fees.to_be_bytes();
-                let withdrawn_protocol_quote_fees: [u8; 8] = event.withdrawn_protocol_quote_fees.to_be_bytes();
+                let withdrawn_protocol_base_fees: [u8; 8] =
+                    event.withdrawn_protocol_base_fees.to_be_bytes();
+                let withdrawn_protocol_quote_fees: [u8; 8] =
+                    event.withdrawn_protocol_quote_fees.to_be_bytes();
                 scylla_session
                     .query_unpaged(
                         "INSERT INTO collect_fees_from_cp_amm_event \
@@ -144,10 +139,13 @@ impl EventsSaver<LiquidityPoolProgram> for ScyllaDbEventsSaver<LiquidityPoolProg
                             event.fee_authority_quote_account.to_string(),
                             withdrawn_protocol_base_fees.as_slice(),
                             withdrawn_protocol_quote_fees.as_slice(),
-                        )
+                        ),
                     )
                     .await?;
-                debug!("Saving CollectFeesFromCpAmmEvent from signature {}", signature);
+                debug!(
+                    "Saving CollectFeesFromCpAmmEvent from signature {}",
+                    signature
+                );
             }
             LiquidityPoolProgram::LaunchCpAmmEvent(event) => {
                 let mut batch = Batch::new(BatchType::Unlogged);
@@ -238,24 +236,39 @@ impl EventsSaver<LiquidityPoolProgram> for ScyllaDbEventsSaver<LiquidityPoolProg
                 debug!("Saving LaunchCpAmmEvent from signature {}", signature);
             }
             LiquidityPoolProgram::InitializeCpAmmEvent(event) => {
-                scylla_session
-                    .query_unpaged(
-                        "INSERT INTO uninitialized_cp_amms (signature, timestamp, event_id, creator, cp_amm, amms_config, base_mint, quote_mint, lp_mint) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                        (
-                            &signature,
-                            event.timestamp,
-                            Self::get_uuid(event.timestamp as u64),
-                            event.creator.to_string(),
-                            event.cp_amm.to_string(),
-                            event.amms_config.to_string(),
-                            event.base_mint.to_string(),
-                            event.quote_mint.to_string(),
-                            event.lp_mint.to_string(),
-                        ),
-                    )
-                    .await?;
-                debug!("Saving InitializeCpAmmEvent from signature {}", signature);
+                let mut batch = Batch::new(BatchType::Unlogged);
+                batch.append_statement(
+                    "INSERT INTO uninitialized_cp_amms (signature, timestamp, event_id, creator, cp_amm, amms_config, base_mint, quote_mint, lp_mint) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                );
+                batch.append_statement(
+                    "INSERT INTO cp_amms_keys \
+                    (cp_amm, amms_config, base_mint, quote_mint, lp_mint) \
+                    VALUES (?, ?, ?, ?, ?)",
+                );
 
+                let values = (
+                    (
+                        &signature,
+                        event.timestamp,
+                        Self::get_uuid(event.timestamp as u64),
+                        event.creator.to_string(),
+                        event.cp_amm.to_string(),
+                        event.amms_config.to_string(),
+                        event.base_mint.to_string(),
+                        event.quote_mint.to_string(),
+                        event.lp_mint.to_string(),
+                    ),
+                    (
+                        event.cp_amm.to_string(),
+                        event.amms_config.to_string(),
+                        event.base_mint.to_string(),
+                        event.quote_mint.to_string(),
+                        event.lp_mint.to_string(),
+                    )
+                );
+
+                scylla_session.batch(&batch, values).await?;
+                debug!("Saving InitializeCpAmmEvent from signature {}", signature);
             }
             LiquidityPoolProgram::UpdateAmmsConfigFeeAuthorityEvent(event) => {
                 scylla_session
@@ -426,6 +439,11 @@ impl EventsSaver<LaunchpoolProgram> for ScyllaDbEventsSaver<LaunchpoolProgram> {
                         VALUES (?, ?, ?, ?, ?, ?)",
                 );
                 batch.append_statement(
+                    "INSERT INTO stake_positions \
+                        (signature, timestamp, user, launchpool, stake_position) \
+                        VALUES (?, ?, ?, ?, ?)",
+                );
+                batch.append_statement(
                     "INSERT INTO stake_positions_status (stake_position, status) VALUES (?, ?)",
                 );
 
@@ -450,6 +468,13 @@ impl EventsSaver<LaunchpoolProgram> for ScyllaDbEventsSaver<LaunchpoolProgram> {
                         timestamp as i64,
                         &launchpool,
                         &user,
+                        &stake_position,
+                    ),
+                    (
+                        &signature,
+                        timestamp as i64,
+                        &user,
+                        &launchpool,
                         &stake_position,
                     ),
                     (&stake_position, PositionStatus::Opened as i8),

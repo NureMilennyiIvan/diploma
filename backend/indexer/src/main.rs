@@ -23,6 +23,10 @@ mod utils;
 async fn main() -> AnyResult<()> {
     dotenv::dotenv().ok();
     tracing_subscriber::fmt::init();
+
+    let env_scylla_path = env::var("ENV_SCYLLA_PATH").expect("ENV_SCYLLA_PATH must be set");
+    dotenv::from_path(&env_scylla_path).unwrap_or_else(|_| panic!("Error loading {} file", env_scylla_path));
+
     let scylla_uri = env::var("SCYLLA_URI").expect("SCYLLA_URI must be set");
     let liquidity_pool_scylla_session: Session = SessionBuilder::new()
         .known_node(

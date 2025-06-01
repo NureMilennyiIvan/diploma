@@ -76,6 +76,15 @@ CREATE TABLE IF NOT EXISTS upd_amms_cfg_prov_fee_events
     PRIMARY KEY ((amms_config), event_id)
 ) WITH CLUSTERING ORDER BY (event_id DESC);
 
+CREATE TABLE IF NOT EXISTS cp_amms_keys
+(
+    cp_amm      text PRIMARY KEY,
+    amms_config text,
+    base_mint   text,
+    quote_mint  text,
+    lp_mint     text
+);
+
 CREATE TABLE IF NOT EXISTS uninitialized_cp_amms
 (
     signature   text,

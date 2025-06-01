@@ -12,10 +12,11 @@ pub struct CloseStakePosition<'info> {
     pub signer: Signer<'info>,
 
     #[account(
-        mut,
-        token::mint = reward_mint,
-        token::authority = signer,
-        token::token_program = reward_token_program
+        init_if_needed,
+        payer = signer,
+        associated_token::mint = reward_mint,
+        associated_token::authority = signer,
+        associated_token::token_program = reward_token_program
     )]
     pub signer_reward_account: Box<InterfaceAccount<'info, InterfaceTokenAccount>>,
 

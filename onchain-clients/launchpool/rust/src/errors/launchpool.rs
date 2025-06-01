@@ -10,60 +10,42 @@ use thiserror::Error;
 
 #[derive(Clone, Debug, Eq, Error, FromPrimitive, PartialEq)]
 pub enum LaunchpoolError {
-    /// 6000 - Invalid initial reward amount provided during initialization.
-    #[error("Invalid initial reward amount provided during initialization.")]
-    InvalidInitialRewardAmount = 0x1770,
-    /// 6001 - Launchpool is already initialized.
-    #[error("Launchpool is already initialized.")]
-    LaunchpoolAlreadyInitialized = 0x1771,
-    /// 6002 - Launchpool must be in 'Launched' status.
-    #[error("Launchpool must be in 'Launched' status.")]
-    LaunchpoolNotLaunched = 0x1772,
-    /// 6003 - Launchpool has not started yet.
-    #[error("Launchpool has not started yet.")]
-    LaunchpoolNotStartedYet = 0x1773,
-    /// 6004 - Launchpool has already ended.
-    #[error("Launchpool has already ended.")]
-    LaunchpoolAlreadyEnded = 0x1774,
-    /// 6005 - Launchpool has not ended yet.
-    #[error("Launchpool has not ended yet.")]
-    LaunchpoolNotEndedYet = 0x1775,
-    /// 6006 - Launchpool is not finished yet.
-    #[error("Launchpool is not finished yet.")]
-    LaunchpoolNotFinished = 0x1776,
-    /// 6007 - Launchpool is not initialized.
-    #[error("Launchpool is not initialized.")]
-    LaunchpoolNotInitialized = 0x1777,
-    /// 6008 - Provided start time is in the past.
-    #[error("Provided start time is in the past.")]
-    StartTimeInPast = 0x1778,
-    /// 6009 - Overflow occurred when calculating end time.
-    #[error("Overflow occurred when calculating end time.")]
-    EndTimeOverflow = 0x1779,
-    /// 6010 - Effective time is before the last update timestamp.
-    #[error("Effective time is before the last update timestamp.")]
-    EffectiveTimeBeforeLastAccrual = 0x177A,
-    /// 6011 - Overflow occurred during reward calculation.
-    #[error("Overflow occurred during reward calculation.")]
-    RewardCalculationOverflow = 0x177B,
-    /// 6012 - Division by zero during reward calculation.
-    #[error("Division by zero during reward calculation.")]
-    DivisionByZeroDuringRewardCalculation = 0x177C,
-    /// 6013 - Overflow occurred while calculating reward rate.
-    #[error("Overflow occurred while calculating reward rate.")]
-    RewardRateOverflow = 0x177D,
-    /// 6014 - Overflow occurred while updating reward per token.
-    #[error("Overflow occurred while updating reward per token.")]
-    RewardPerTokenOverflow = 0x177E,
-    /// 6015 - Overflow occurred while updating staked amount.
-    #[error("Overflow occurred while updating staked amount.")]
-    StakedAmountOverflow = 0x177F,
-    /// 6016 - Overflow occurred while distributing rewards.
-    #[error("Overflow occurred while distributing rewards.")]
-    RewardDistributionOverflow = 0x1780,
-    /// 6017 - Overflow occurred while redeeming participant rewards.
-    #[error("Overflow occurred while redeeming participant rewards.")]
-    RewardObtentionOverflow = 0x1781,
+    /// 6000 - Stake position is already initialized.
+    #[error("Stake position is already initialized.")]
+    StakePositionAlreadyInitialized = 0x1770,
+    /// 6001 - Invalid state for opening a stake position.
+    #[error("Invalid state for opening a stake position.")]
+    InvalidStakePositionStateForOpen = 0x1771,
+    /// 6002 - Stake position is not opened.
+    #[error("Stake position is not opened.")]
+    StakePositionNotOpened = 0x1772,
+    /// 6003 - Launchpool provided does not match the one stored in the position.
+    #[error("Launchpool provided does not match the one stored in the position.")]
+    MismatchedLaunchpool = 0x1773,
+    /// 6004 - Stake amount must be greater than zero.
+    #[error("Stake amount must be greater than zero.")]
+    StakeAmountIsZero = 0x1774,
+    /// 6005 - Stake amount is below the minimum allowed.
+    #[error("Stake amount is below the minimum allowed.")]
+    StakeBelowMinimum = 0x1775,
+    /// 6006 - Stake amount exceeds the maximum allowed.
+    #[error("Stake amount exceeds the maximum allowed.")]
+    StakeAboveMaximum = 0x1776,
+    /// 6007 - Overflow occurred during reward accumulation.
+    #[error("Overflow occurred during reward accumulation.")]
+    RewardAccumulationOverflow = 0x1777,
+    /// 6008 - Reward debt is greater than total accrued reward.
+    #[error("Reward debt is greater than total accrued reward.")]
+    RewardDebtExceedsAccrued = 0x1778,
+    /// 6009 - Overflow occurred while adding pending reward.
+    #[error("Overflow occurred while adding pending reward.")]
+    RewardOverflow = 0x1779,
+    /// 6010 - Overflow occurred while increasing staked amount.
+    #[error("Overflow occurred while increasing staked amount.")]
+    StakeOverflow = 0x177A,
+    /// 6011 - Overflow occurred while calculating reward debt.
+    #[error("Overflow occurred while calculating reward debt.")]
+    RewardDebtCalculationOverflow = 0x177B,
 }
 
 impl solana_program::program_error::PrintProgramError for LaunchpoolError {

@@ -31,6 +31,10 @@ import {
 export type LaunchCpAmmEvent = {
   creator: Address;
   cpAmm: Address;
+  ammsConfig: Address;
+  baseMint: Address;
+  quoteMint: Address;
+  lpMint: Address;
   baseLiquidity: bigint;
   quoteLiquidity: bigint;
   initialLockedLiquidity: bigint;
@@ -43,6 +47,10 @@ export type LaunchCpAmmEvent = {
 export type LaunchCpAmmEventArgs = {
   creator: Address;
   cpAmm: Address;
+  ammsConfig: Address;
+  baseMint: Address;
+  quoteMint: Address;
+  lpMint: Address;
   baseLiquidity: number | bigint;
   quoteLiquidity: number | bigint;
   initialLockedLiquidity: number | bigint;
@@ -56,6 +64,10 @@ export function getLaunchCpAmmEventEncoder(): Encoder<LaunchCpAmmEventArgs> {
   return getStructEncoder([
     ['creator', getAddressEncoder()],
     ['cpAmm', getAddressEncoder()],
+    ['ammsConfig', getAddressEncoder()],
+    ['baseMint', getAddressEncoder()],
+    ['quoteMint', getAddressEncoder()],
+    ['lpMint', getAddressEncoder()],
     ['baseLiquidity', getU64Encoder()],
     ['quoteLiquidity', getU64Encoder()],
     ['initialLockedLiquidity', getU64Encoder()],
@@ -70,6 +82,10 @@ export function getLaunchCpAmmEventDecoder(): Decoder<LaunchCpAmmEvent> {
   return getStructDecoder([
     ['creator', getAddressDecoder()],
     ['cpAmm', getAddressDecoder()],
+    ['ammsConfig', getAddressDecoder()],
+    ['baseMint', getAddressDecoder()],
+    ['quoteMint', getAddressDecoder()],
+    ['lpMint', getAddressDecoder()],
     ['baseLiquidity', getU64Decoder()],
     ['quoteLiquidity', getU64Decoder()],
     ['initialLockedLiquidity', getU64Decoder()],

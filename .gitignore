@@ -13,9 +13,18 @@
 
 /onchain-clients/liquidity-pool/rust/target
 /onchain-clients/launchpool/rust/target
+/onchain-clients/target
+
+/backend/test-ledger
+/backend/indexer-data
+/backend/.env.scylla
 
 /backend/indexer/target
 /backend/indexer/.env
-
 /backend/webserver/target
+/backend/webserver/.env
+/backend/webserver/.env.cache
 
+/utilities/target/
+
+.env.routes

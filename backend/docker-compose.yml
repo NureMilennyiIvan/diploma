@@ -8,9 +8,8 @@ services:
     networks:
       - scylla-net
     restart: unless-stopped
-    volumes:
-      - ./indexer-data:/var/lib/scylla
-      - ./cql-init:/scripts:ro
+    #volumes:
+      #- ./indexer-data:/var/lib/scylla
 
   init-scylla:
     image: bitnami/cassandra:latest

@@ -108,6 +108,15 @@ CREATE TABLE IF NOT EXISTS launchpools_status
     status     tinyint
 );
 
+CREATE TABLE IF NOT EXISTS stake_positions
+(
+    signature      text,
+    timestamp      bigint,
+    user           text,
+    launchpool     text,
+    stake_position text  PRIMARY KEY
+);
+
 CREATE TABLE IF NOT EXISTS stake_positions_by_user
 (
     signature      text,

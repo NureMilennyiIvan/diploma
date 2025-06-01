@@ -221,7 +221,7 @@ mod tests {
             250
         );
         let amount = 120;
-        let expected_reward_debt = (Q64_128::from_u64(amount) * snapshot.reward_per_token());
+        let expected_reward_debt = Q64_128::from_u64(amount) * snapshot.reward_per_token();
 
 
         let mut pos = default_position();

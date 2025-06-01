@@ -114,6 +114,10 @@ pub(crate) fn handler(ctx: Context<LaunchCpAmm>, base_liquidity: u64, quote_liqu
         LaunchCpAmmEvent{
             creator: cp_amm.creator().key(),
             cp_amm: cp_amm.key(),
+            amms_config: cp_amm.amms_config().key(),
+            base_mint: cp_amm.base_mint().key(),
+            quote_mint: cp_amm.quote_mint().key(),
+            lp_mint: cp_amm.lp_mint.key(),
             base_liquidity: cp_amm.base_liquidity(),
             quote_liquidity: cp_amm.quote_liquidity(),
             initial_locked_liquidity: cp_amm.initial_locked_liquidity(),
@@ -129,6 +133,10 @@ pub(crate) fn handler(ctx: Context<LaunchCpAmm>, base_liquidity: u64, quote_liqu
 pub struct LaunchCpAmmEvent{
     pub creator: Pubkey,
     pub cp_amm: Pubkey,
+    pub amms_config: Pubkey,
+    pub base_mint: Pubkey,
+    pub quote_mint: Pubkey,
+    pub lp_mint: Pubkey,
     pub base_liquidity: u64,
     pub quote_liquidity: u64,
     pub initial_locked_liquidity: u64,
